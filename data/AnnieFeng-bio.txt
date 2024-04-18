@@ -1,0 +1,7 @@
+I am from Johns Creek, Georgia, USA. Since I began studying EECS in college, I've developed an interest in AI and robotics and an appreciation for mathematics and physics. My long-term career goal as an engineer and researcher is to work towards general-purpose robots for assisting people in everyday tasks.
+
+During my undergraduate studies, I stepped into research with cost-effectiveness modeling for a radioprotectant shield under Professor Giovanni Traverso. This resulted in my first publication. On a different project, I worked on a computer vision algorithm for a robotic triage of COVID-19 using a Boston Dynamics SPOT robot, which resulted in 2 publications and motivated my studies in EECS.
+
+As a graduate student, I'm advised by Tomas Lozano-Perez and work in the Learning and Intelligent Systems group. Our research focuses on learning and planning algorithms for robotic perception and manipulation. I'm focused on leveraging foundational models to bootstrap robot learning.
+
+Outside of the classroom and lab, I have a variety of hobbies. Music has been a big part of my life, and during my undergraduate years, I performed music as an Emerson-Harris Piano Scholar and also played the French horn in the MIT Symphony orchestra. More recently, I've been enjoying swing dancing with MIT Lindy Hop Society and playing poker.
