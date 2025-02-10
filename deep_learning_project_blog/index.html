@@ -1,0 +1,688 @@
+<html>
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<link rel="shortcut icon" href="images/icon.ico">
+<style type="text/css">
+	body {
+		background-color: #f5f9ff;
+	}
+
+	/* Hide both math displays initially, will display based on JS detection */
+  .mathjax-mobile, .mathml-non-mobile { display: none; }
+
+  /* Show the MathML content by default on non-mobile devices */
+  .show-mathml .mathml-non-mobile { display: block; }
+  .show-mathjax .mathjax-mobile { display: block; }
+
+	.content-margin-container {
+		display: flex;
+		width: 100%; /* Ensure the container is full width */
+		justify-content: left; /* Horizontally centers the children in the container */
+		align-items: center;  /* Vertically centers the children in the container */
+	}
+	.main-content-block {
+		width: 70%; /* Change this percentage as needed */
+    max-width: 1100px; /* Optional: Maximum width */
+		background-color: #fff;
+		border-left: 1px solid #DDD;
+		border-right: 1px solid #DDD;
+		padding: 8px 8px 8px 8px;
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+	}
+	.margin-left-block {
+			font-size: 14px;
+			width: 15%; /* Change this percentage as needed */
+			max-width: 130px; /* Optional: Maximum width */
+			position: relative;
+			margin-left: 10px;
+			text-align: left;
+			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+			padding: 5px;
+	}
+	.margin-right-block {
+			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+			font-size: 14px;
+			width: 25%; /* Change this percentage as needed */
+			max-width: 256px; /* Optional: Maximum width */
+			position: relative;
+			text-align: left;
+			padding: 10px;  /* Optional: Adds padding inside the caption */
+	}
+
+	img {
+			max-width: 100%; /* Make sure it fits inside the container */
+			height: auto;
+			display: block;
+			margin: auto;
+	}
+	.my-video {
+			max-width: 100%; /* Make sure it fits inside the container */
+			height: auto;
+			display: block;
+			margin: auto;
+	}
+	/* Hide both video displays initially, will display based on JS detection */
+  .vid-mobile, .vid-non-mobile { display: none; }
+
+  /* Show the video content by default on non-mobile devices */
+  .show-vid-mobile .vid-mobile { display: block; }
+  .show-vid-non-mobile .vid-non-mobile { display: block; }
+
+	a:link,a:visited
+	{
+		color: #0e7862; /*#1367a7;*/
+		text-decoration: none;
+	}
+	a:hover {
+		color: #24b597; /*#208799;*/
+	}
+
+	h1 {
+		font-size: 28px;
+		margin-top: 4px;
+		margin-bottom: 10px;
+	}
+
+	table.header {
+    font-weight: 300;
+    font-size: 17px;
+    flex-grow: 1;
+		width: 70%;
+    max-width: calc(100% - 290px); /* Adjust according to the width of .paper-code-tab */
+	}
+	table td, table td * {
+	    vertical-align: middle;
+	    position: relative;
+	}
+	table.paper-code-tab {
+	    flex-shrink: 0;
+	    margin-left: 8px;
+	    margin-top: 8px;
+	    padding: 0px 0px 0px 8px;
+	    width: 290px;
+	    height: 150px;
+	}
+
+	.layered-paper { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+		        0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
+		        5px 5px 0 0px #fff, /* The second layer */
+		        5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
+		        10px 10px 0 0px #fff, /* The third layer */
+		        10px 10px 1px 1px rgba(0,0,0,0.35); /* The third layer shadow */
+		margin-top: 5px;
+		margin-left: 10px;
+		margin-right: 30px;
+		margin-bottom: 5px;
+	}
+
+	hr {
+    height: 1px; /* Sets the height of the line to 1 pixel */
+    border: none; /* Removes the default border */
+    background-color: #DDD; /* Sets the line color to black */
+  }
+
+	div.hypothesis {
+		width: 80%;
+		background-color: #EEE;
+		border: 1px solid black;
+		border-radius: 10px;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		font-family: Courier;
+		font-size: 18px;
+		text-align: center;
+		margin: auto;
+		padding: 16px 16px 16px 16px;
+	}
+
+	div.citation {
+    font-size: 0.8em;
+    background-color:#fff;
+    padding: 10px;
+		height: 200px;
+  }
+
+	.fade-in-inline {
+		position: absolute;
+		text-align: center;
+		margin: auto;
+		-webkit-mask-image: linear-gradient(to right,
+																			transparent 0%,
+																			transparent 40%,
+																			black 50%,
+																			black 90%,
+																			transparent 100%);
+		mask-image: linear-gradient(to right,
+																transparent 0%,
+																transparent 40%,
+																black 50%,
+																black 90%,
+																transparent 100%);
+		-webkit-mask-size: 8000% 100%;
+		mask-size: 8000% 100%;
+		animation-name: sweepMask;
+		animation-duration: 4s;
+		animation-iteration-count: infinite;
+		animation-timing-function: linear;
+		animation-delay: -1s;
+	}
+
+	.fade-in2-inline {
+			animation-delay: 1s;
+	}
+
+	.inline-div {
+			position: relative;
+	    display: inline-block; /* Makes both the div and paragraph inline-block elements */
+	    vertical-align: top; /* Aligns them at the top, you can adjust this to middle, bottom, etc., based on your needs */
+	    width: 50px; /* Optional: Adds space between the div and the paragraph */
+	}
+
+</style>
+
+	  <title>A Study on Planning with Large Language Models in Relational Domains</title>
+      <meta property="og:title" content="A Study on Planning with Large Language Models in Relational Domains" />
+			<meta charset="UTF-8">
+  </head>
+
+  <body>
+
+		<div class="content-margin-container">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<table class="header" align=left>
+								<tr>
+									<td colspan=4>
+										<span style="font-size: 32px; font-family: 'Courier New', Courier, monospace; /* Adds fallbacks */">A Study on Planning with Large Language Models in Relational Domains</span>
+									</td>
+								</tr>
+								<tr>
+										<td align=left>
+												<span style="font-size:17px"><a href="https://azfeng8.github.io">Annie Feng</a></span>
+										</td>
+								<tr>
+									<td colspan=4 align=left><span style="font-size:18px">Final project for 6.7960 Fall 2024, MIT</span></td>
+								</tr>
+						</table>
+					</div>
+					<div class="margin-right-block">
+					</div>
+		</div>
+
+		<div class="content-margin-container" id="intro">
+				<div class="margin-left-block">
+          <!-- table of contents here -->
+          <div style="position:fixed; max-width:inherit; top:max(20%,120px)">
+              <b style="font-size:16px">Outline</b><br><br>
+              <a href="#intro">Introduction and Related Work</a><br><br>
+              <a href="#agentic_wfs">Our Agentic Workflows for Planning in Relational Domains</a><br><br>
+              <a href="#prompt_templates">Prompt Templates</a><br><br>
+              <a href="#results">Results</a><br><br>
+              <a href="#implications_and_limitations">Implications and limitations</a><br><br>
+              <a href="#appendix">Appendix: Predicate Descriptions</a><br><br>
+          </div>
+				</div>
+		    <div class="main-content-block">
+            <!--You can embed an image like this:-->
+             <img src="./images/robot-baking-cakes.png" width=512px/>
+		    </div>
+		    <div class="margin-right-block">
+						A robot learning to bake cakes and souffles in a kitchen. This is the premise of the agent's tasks in the Baking-Large domain used in our experiments.
+		    </div>
+		</div>
+
+    <div class="content-margin-container" id="intro">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+			<h1>Introduction and Related Work</h1>
+			<p style="text-indent: 15px;">  
+				Large Language Models (LLMs) have recently emerged as powerful tools for
+				decision-making and are increasingly being integrated into planning systems.
+				Planning is a fundamental component of the decision-making process in LLM-based agents <a href="#ref_3">[3]</a>. Traditionally, planning has been dominated by symbolic methods, such as the widely used FastDownward planning system <a href="#ref_1">[1]</a>, which operate
+				on problems defined in the Planning Domain Definition Language (PDDL).
+				These automated planners rely on formally defined domain and problem specifications, typically crafted by domain experts, to produce sound and complete plans.
+			</p>
+			<p style="text-indent: 15px;">  
+				In contrast, LLMs offer a more flexible alternative by enabling planning
+				from natural language descriptions without requiring predefined domain models. However, this flexibility comes at the cost of reliability, as LLMs lack the
+				guarantees of soundness and completeness inherent to symbolic planners. Recent studies have highlighted the limitations of LLMs in planning tasks, finding
+				that symbolic planners generally outperform LLMs under the strict conditions
+				for which symbolic methods are well-suited <a href="#ref_8">[8]</a>, <a href="#ref_7">[7]</a>, <a href="#ref_4">[4]</a>. Nonetheless, these critiques
+				also suggest that LLMs may excel in planning under alternative conditions that
+				leverage their strengths.
+			</p>
+			<p style="text-indent: 15px;">  
+				In this work, we explore the potential of LLMs to plan effectively in relational, symbolic domains when certain overlooked conditions are met. We
+				propose and evaluate an agentic workflow that enables LLM-based planning in
+				relational domains. Unlike prior work, which has primarily focused on zero-shot or one-shot planning open-loop with LLMs—often with poor results in
+				relational settings <a href="#ref_8">[8]</a>—our approach adopts a closed-loop paradigm. Specifically, we leverage the LLM not only as a planner but also as an interpreter of
+				execution errors, enabling iterative refinement of plans. While recent studies
+				have investigated closed-loop planning with LLMs with error explanations<a href="#ref_5">[5]</a>, <a href="#ref_2">[2]</a>, <a href="#ref_9">[9]</a>, these efforts have not
+				addressed the relational domain context that is central to our approach. We
+				propose an agentic workflow for planning in relational domains. This workflow
+				processes inputs through a pipeline of prompt templates to generate actions,
+				which are subsequently executed. In relational domains, actions and states
+				are represented as relations over objects, expressed as predicates (see the sidenote for more details). To integrate
+				LLMs effectively, we label these predicates with natural language descriptions
+				and construct prompts using these descriptions and the prompt templates.
+			</p>
+			<p style="text-indent: 15px;">  
+				Our approach differs from the method presented in <a href="#ref_8">[8]</a>, which operates under
+				a similar relational domain setting. To address the limitations observed in their
+				work, we hypothesize that the suboptimal performance of LLMs in their experiments arises from inappropriate use of the models. Specifically, we propose two
+				key hypotheses:
+			</p>
+
+			<ol>
+				<li><strong>Domain Formalism:</strong> The domains used in <a href="#ref_8">[8]</a>, such as Blocksworld and
+					Logistics, were originally designed for symbolic planners and are characterized by highly formal predicates and puzzle-like problems. Their study
+					even found that humans struggle to generate plans in these domains, suggesting they may not be intuitive or suitable for LLMs.</li>
+				<br>
+				<li>
+					<strong>Planning Horizon:</strong> The planning horizon is the length of the plan. As the planning horizon increases, LLM planning performance degrades. However, when planning is conducted in a closed-loop
+					fashion—executing and refining one action at a time with feedback—LLMs are expected to perform significantly better over shorter horizons.
+				</li>
+			</ol>
+			To test these hypotheses, we designed the following experiments:
+			<ol>
+				<li>
+					<strong>Testing Domain Suitability:</strong> We evaluated the hypothesis that highly
+					formal domains are unsuitable for LLMs by replacing the Blocksworld
+					and Logistics domains by running planning experiments in a more semantically intuitive domain, Baking-Large. In this household robotics domain, an agent is tasked with baking
+					cakes and souffles and serving them on plates, using predicates that are
+					more descriptive and meaningful.
+				</li>
+				<br>
+				<li>
+					<strong>Closed-Loop vs. Open-Loop Planning:</strong> To test the impact of planning horizon, we implemented our agentic workflow in the Baking-Large
+					domain. We compared open-loop planning, where plans are generated in
+					their entirety without feedback, to closed-loop planning, where the LLM
+					iteratively generates and refines actions based on feedback after each execution step. We also varied the planning horizon in our closed-loop approach.
+				</li>
+			</ol>
+
+		</div>
+				<div class="margin-right-block">
+				<p style="text-indent: 15px;">
+					Our setting is relational, which means that states and actions are expressed as ground literals, or predicates applied to observed objects in the state (such as pan-0 or egg-1). Predicates are Boolean-valued functions. A predicate applied to objects or variables is a ground literal or lifted literal, respectively. Each action is a ground literal constructed from a predicate. Each predicate has a semantically meaningful name, such as "is-raw-egg-yolk" (a state predicate) or "put-pan-in-oven" (an action predicate).
+				</p>
+				</div>
+		</div>
+
+		<div class="content-margin-container" id="agentic_wfs">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+				<h1>Our Agentic Workflows for Planning in Relational Domains</h1>
+				<h2>Open-Loop Agentic Workflow</h2>
+				<p style="text-indent: 15px;">
+					We present our prompt template pipelines (agentic workflows) for planning in the Baking-Large domain. 
+					For reference, the predicate descriptions used in these workflows are provided in the Appendix.
+				</p>
+				<p style="text-indent: 15px;">
+					The open-loop workflow consists of three main prompting stages, as illustrated in 
+					<strong>Figure 4</strong>. Green boxes represent prompt templates, white boxes denote data, 
+					and red indicates interactions with the simulated environment.
+				</p>
+
+				<img src="images/open-loop-agentic-wf.drawio.png" alt="Open-Loop Agentic Workflow. Green boxes are prompt templates, white is for data, and red indicates interactions with the simulated environment." style="width:100%; max-width:1800px;"> 
+				<p><strong>Figure 1</strong>: Open-Loop Agentic Workflow.</p>
+
+				<ol>
+					<li>
+						<strong>Domain Introduction:</strong> We introduce the domain to GPT-4o, instructing it to 
+						roleplay as a household robot. This prompt describes the object types and provides a brief 
+						overview of recipes for baking cakes and soufflés.
+					</li>
+					<li>
+						<strong>Request Action Predicate Name Sequence:</strong> Using the initial and goal states, we 
+						prompt GPT-4o to generate a sequence of action predicate names that achieve the goal.
+					</li>
+					<li>
+						<strong>Request Grounded Actions:</strong> Based on the response to the previous prompt, we 
+						sequentially ground each action (a.k.a. apply each action predicate to objects observed in the state) by specifying the relevant objects. This sequence forms the 
+						open-loop plan, which the agent executes without further feedback or replanning.
+					</li>
+				</ol>
+
+				<h2>Closed-Loop Agentic Workflow</h2>
+				<p>
+					The closed-loop workflow builds on the open-loop process by adding steps for failure diagnosis and 
+					replanning, as depicted in <strong>Figure 2</strong>. This approach allows the agent to iteratively 
+					refine its plan based on feedback from the environment.
+				</p>
+
+				<img src="images/closedloop.drawio.png" alt="Closed-Loop Agentic Workflow. Green boxes are prompt templates, white boxes are data, and red and blue denote interactions with the simulated environment." style="width:100%; max-width:1800px;">
+				<p><strong>Figure 2</strong>: Closed-Loop Agentic Workflow.</p>
+
+				<p>
+					In the closed-loop workflow, we introduce the concept of planning at different horizons. For a 
+					specified horizon <em>H</em>, the agent grounds up to <em>H</em> actions at a time and executes this 
+					partial plan. The process continues until the goal is achieved, a failure occurs, or the agent 
+					reaches the action limit (set to 50 actions). The key steps are as follows:
+				</p>
+
+				<ul>
+					<li>If the plan completes without achieving the goal, the agent replans starting from the current state.</li>
+					<li>If the plan fails, the agent resets the environment to the initial state of the episode, replans, and retries.</li>
+					<li>If the goal is reached, the task is complete.</li>
+					<li>If the action limit is exceeded without achieving the goal, the task is declared a failure.</li>
+				</ul>
+
+				<p>The prompting stages for closed-loop planning include:</p>
+
+				<ol>
+					<li>
+						<strong>Domain Introduction:</strong> The same as in the open-loop workflow.
+					</li>
+					<li>
+						<strong>Request Action Predicate Name Sequence:</strong> Similar to the open-loop workflow, but 
+						this prompt can be issued multiple times, reflecting updates to the current state during execution.
+					</li>
+					<li>
+						<strong>Request Grounded Actions:</strong> This prompt resembles its open-loop counterpart but is 
+						used iteratively, grounding actions for the current state and horizon <em>H</em>. Unlike the 
+						open-loop workflow, which grounds all actions at once using a single initial state, the closed-loop 
+						workflow updates the state after each action's execution and grounds up to <em>H</em> actions at a 
+						time based on the new state.
+					</li>
+					<li>
+						<strong>Request Explanations on Failed Executions:</strong> After a failure, we provide the LLM 
+						with the failed action and the state in which it was executed. The LLM is prompted to explain the 
+						failure, and its explanation is included in the context for replanning from the start of the episode.
+					</li>
+				</ol>
+		    </div> 
+
+		</div>
+
+		<div class="content-margin-container" id="prompt_templates">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+				<h1>Prompt Templates</h1>
+				<p style="text-indent: 15px;">
+					In the following sections, we detail the specific prompts and prompt templates used for each stage in both workflows.
+				</p>
+
+				<h2>Domain Introduction Prompts</h3>
+				<p style="text-indent: 15px;">
+					At the beginning, we prompt twice, appending GPT4o's responses to our conversation each time. Here is the first prompt:
+				</p>
+				<pre>
+				You are a household robot in a kitchen. You are in front of the kitchen counter, where there are some prepared ingredients. 
+
+				More specifically, you will be given a set of facts that are currently true in the world, and a set of facts that is your goal to make true in the world. With my step-by-step guidance, you will think through how to act to achieve the goal.
+				</pre>
+				<p style="text-indent: 15px;">Here is the second prompt:</p>
+				<pre>
+				In the kitchen, there different kinds of objects that you can interact with. The different kind of objects that you see are categorized into the following:
+
+				container
+				measuring cup
+				dessert
+				powder
+				butter
+				mixture
+				egg
+				oven
+				spatula
+				electric stand mixer
+
+				Right now, you see the some of these ingredients and items on the counter. You also see some appliances in the kitchen. 
+
+				To start making a mixture for a souffle, you need to mix together egg yolk, sugar, butter, and a little bit of flour. To make a mixture for a cake, you need to mix together a whole egg, sugar, butter, more flour, and baking powder.
+				</pre>
+
+				<h3>Requesting Action Sequence Prompt Templates</h3>
+				<p style="text-indent: 15px;">We first prompt with the starting state using this template:</p>
+				<pre>
+				f"""
+				The following things are true at this moment:
+
+				{starting_state_predicate_fstrings}
+
+				As a reminder, in the kitchen, the pans, measuring cups, and bowls are on the counter, and the oven(s) is (are) behind the counter. If you are baking desserts, please rationalize what are the essential ingredients and their amounts to make those desserts and use only those. Once an ingredient is used once, it can't be reused.
+
+				You should have all of the ingredients that you need on the counter prepared for you. I'll let you know what desserts you will make shortly. 
+				"""
+				</pre>
+				<p style="text-indent: 15px;">Then, we prompt with the goal state and the defined set of actions for the robot:</p>
+				<pre>
+				f"""These are the things that you would like to become true:
+				{goal_state_predicate_fstrings}
+
+				This state is your goal.
+
+				These are the names of the atomic actions that we can perform, along with their descriptions:
+				{action_description_string}
+
+				Can you please give a sequence of these phrases that will get us to the goal? Include the exact phrase in each step of your answer. Format it using a numbered list with one line per step, starting with "1.". Give a little explanation of each step underneath each bullet point. Mark the end of the plan with '***' in your response. Please avoid any past planning mistakes.
+				"""
+				</pre>
+
+				<h3>Grounding Action Prompt Templates</h3>
+				<p style="text-indent: 15px;">For the first action we ground, we prompt using this template:</p>
+				<pre>
+				f"""Thanks. Let's think step by step what objects are associated with each of these actions.
+				Let's recap what we've talked about. Currently, the following facts are true:
+
+				{starting_state_predicate_fstrings}
+
+				We want to make these facts true:
+				{goal_state_predicate_fstrings}
+
+				We're thinking through a plan step-by-step to our goal. 
+
+				We are about to do the next step in the plan:
+
+				{instruction}
+				""" + \
+				"""We need to identify the names of the specific objects involved in this action. Here are more details about how the objects involved need to relate to the action.
+				""" + '\n'.join(variable_description_list) 
+				</pre>
+				<p style="text-indent: 15px;">
+					For the following actions in the action sequence from the LLM that we ground, we use only the second 
+					half of the above template (starting from "We are about to do the next step in the plan:").
+				</p>
+				<p style="text-indent: 15px;">
+					To ground each variable in the action predicate referenced by the name in the action sequence from the 
+					LLM, we use this prompt template:
+				</p>
+				<pre>
+				f"""We are going to {action_description_with_nonspecific_articles[:-1].lower()}. Given knowledge of the current state and our planned actions, which of the following objects fits the description, {variable_description}?
+				""" + '\n'.join([o._str.split(':')[0] for o in objects_list]) + '\n' + 'Please explain your answer, and then answer with the object name on the last line after "Answer:".'
+				</pre>
+
+				<h3>Plan Failure Explanation Prompt Templates</h3>
+				<p style="text-indent: 15px;">
+					We first prompt with this prompt template to request an explanation about the plan failure:
+				</p>
+				<pre>
+				f"""Based on your plan, we've just executed these actions:""" +  executed_plan_string + \
+				f"""However, the last action failed to execute properly. Before we executed the last action, the following facts were true in the environment:
+
+				{state_description}
+
+				Then, we tried executing this action:
+
+				{last_action_description}
+
+				However, executing this action failed. Please explain what happened.
+					"""
+				</pre>
+				<p style="text-indent: 15px;">Then, we request the LLM to replan:</p>
+				<pre>
+				f"""
+				Ok, thanks for the explanation. Now, let's replan to the goal from the beginning and avoid this mistake and all previous mistakes.
+
+				Currently, these facts are true:
+
+				{initial_state_description}
+
+				We want these things to be true:
+
+				{goal_state_description}
+
+				These are the names of the atomic actions that we can perform, along with their descriptions:
+				{self.action_description_string}
+
+				Can you please give a sequence of these phrases that will get us to the goal? Include the exact phrase in each step of your answer. Format it using a numbered list with one line per step, starting with "1.". Give a little explanation of each step underneath each bullet point. Mark the end of the plan with '***' in your response. Please avoid all past planning mistakes.
+				"""
+				</pre>
+				<img src="images/planfailure_explanation.png" alt="An example failure explanation. GPT4o's response about an execution failure." style="width:100%; max-width:2000px;">
+	<p style="text-indent: 15px;"><strong>Figure 3</strong>: An example failure explanation. GPT4o's response about an execution failure.</p>
+			</div>
+		</div>
+
+		<div class="content-margin-container" id="results">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+				<h1>Results</h1>
+				<p style="text-indent: 15px;">
+					We used PDDLGym <a href="#ref_6">[6]</a> to simulate relational domains and evaluated the open-loop and closed-loop workflows on four planning problems:
+				</p>
+				<ol>
+					<li><strong>Problem 1</strong>: The goal is to bake a cake. The minimum solution takes 10 actions.</li>
+					<li><strong>Problem 2</strong>: The goal is to bake a souffle. The minimum solution takes 12 actions.</li>
+					<li><strong>Problem 3</strong>: The goal is to bake a cake, take it out of the oven, and put it on a plate. The minimum solution takes 15 actions.</li>
+					<li><strong>Problem 4</strong>: The goal is to bake a cake and a souffle. The minimum solution takes 24 actions.</li>
+				</ol>
+
+				<table border="1" cellspacing="0" cellpadding="5" style="text-align: center; width: 100%; font-size: small;">
+					<caption>Success rates of our methods on the four planning problems. We used GPT-4o for all of our experiments.</caption>
+					<thead>
+						<tr>
+							<th><i>Method</i></th>
+							<th><strong>Problem 1</strong></th>
+							<th><strong>Problem 2</strong></th>
+							<th><strong>Problem 3</strong></th>
+							<th><strong>Problem 4</strong></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><strong>Open-loop</strong></td>
+							<td>4/5 (80%)</td>
+							<td>3/5 (60%)</td>
+							<td>1/5 (20%)</td>
+							<td>0/5 (0%)</td>
+						</tr>
+						<tr>
+							<td><strong>Closed-loop with horizon 5</strong></td>
+							<td>3/5 (60%)</td>
+							<td>5/5 (100%)</td>
+							<td>4/5 (80%)</td>
+							<td>2/5 (40%)</td>
+						</tr>
+						<tr>
+							<td><strong>Closed-loop with horizon 1</strong></td>
+							<td>4/5 (80%)</td>
+							<td>5/5 (100%)</td>
+							<td>5/5 (100%)</td>
+							<td>5/5 (100%)</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<p style="text-indent: 15px;">
+					The results support our initial hypotheses:
+				</p>
+				<ol>
+					<li>
+						<strong>Domain Suitability:</strong> Using a semantically descriptive domain like Baking-Large significantly improved LLM performance compared to the 12% success rate reported for Blocksworld by <a href="#ref_8">[8]</a>. Since <a href="#ref_8">[8]</a> only evaluated open-loop planning, their setup is most comparable to the open-loop row of our results. Even with open-loop planning, our success rates in Baking-Large exceed 20% for most tasks, highlighting that this domain is better aligned with LLM capabilities. Problem 4’s complexity (solution length > 24) further underscores the effectiveness of our closed-loop approach, as such challenges were absent in <a href="#ref_8">[8]</a> (solution lengths generally < 5). The open-loop approach fails miserably on Problem 4 due to its complexity.
+					</li>
+					<br>
+					<li>
+						<strong>Closed-Loop Effectiveness:</strong> The results validate the hypothesis that closed-loop planning with shorter horizons leads to better performance. Open-loop planning, which is equivalent to our closed-loop planning approach with an infinite horizon, performed poorly on more complex problems. By varying the horizon (<i>H</i>), we observed a clear trend: decreasing the horizon increased the success rate. For instance, closed-loop planning with a horizon of 1 achieved a 100% success rate across almost all problems, demonstrating its robustness even in complex scenarios like Problem 4.
+					</li>
+				</ol>
+				<p style="text-indent: 15px;">
+					In summary, the combination of a more intuitive domain and a closed-loop, short-horizon planning approach significantly enhances LLM performance in relational planning tasks.
+				</p>
+		    </div>
+		    <div class="margin-right-block">
+		    </div>
+		</div>
+
+		<div class="content-margin-container" id="implications_and_limitations">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+				<h1>Implications and Limitations</h1>
+
+				<p style="text-indent: 15px;">
+					This work introduces an agentic workflow for planning in relational domains using LLMs, demonstrating that closed-loop planning with iterative feedback and explanations is significantly more effective than open-loop planning or long-horizon approaches. Additionally, our findings confirm that LLM performance is domain-dependent, underscoring the need for further investigation into the characteristics that make certain domains more suitable for LLM-based planning. Another limitation is that the prompt templates in this project were hand-optimized. For future work, these should be systematically created or optimized over. 
+				</p>
+				<p style="text-indent: 15px;">
+					A promising application of this approach lies in leveraging LLMs to collect relational demonstrations for learning symbolic domains during training. This could be performed in a controlled setting with safeguards to ensure reliability. The learned symbolic domains could then be used with traditional symbolic planners during deployment, where performance guarantees are critical. Such a framework is particularly relevant for robotics, where symbolic representations provide compact, generalizable models of actions across similar objects. For instance, an action like <code>stack(a, b)</code> learned during training with blocks A and B could generalize to new objects, such as blocks C and D, during deployment.
+				</p>
+				<p style="text-indent: 15px;">
+					Future work could explore refining this hybrid approach, combining LLMs for learning and symbolic planners for execution, to enhance efficiency and reliability in real-world applications. Furthermore, characterizing the specific attributes of domains that optimize LLM performance and automatically creating and optimizing prompts remain critical areas for further research.
+				</p>
+
+		    </div>
+		    <div class="margin-right-block">
+		    </div>
+		</div>
+
+		<div class="content-margin-container" id="citations">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+				<div class='citation' id="references" style="height:auto"><br>
+					<span style="font-size:16px">References:</span><br><br>
+					<a id="ref_1"></a>[1] <a href="https://arxiv.org/abs/1109.6051">Malte Helmert. The fast downward planning system. CoRR, abs/1109.6051, 2011.</a><br><br>
+
+					<a id="ref_2"></a>[2] <a href="https://arxiv.org/abs/2310.08582">Mengkang Hu, Yao Mu, Xinmiao Yu, Mingyu Ding, Shiguang Wu, Wenqi Shao, Qiguang Chen, Bin Wang, Yu Qiao, and Ping Luo. Tree-planner: Efficient close-loop task planning with large language models, 2024.</a><br><br>
+
+					<a id="ref_3"></a>[3] <a href="https://arxiv.org/abs/2410.14255v1">Xu Huang, Weiwen Liu, Xiaolong Chen, Xingmei Wang, Hao Wang, Defu Lian, Yasheng Wang, Ruiming Tang, and Enhong Chen. Exploring Generalization with Iterative Tree Search and Large Language Models, 2024.</a><br><br>
+
+					<a id="ref_4"></a>[4] <a href="https://arxiv.org/abs/2402.01817">Subbarao Kambhampati, Karthik Valmeekam, Lin Guan, Kaya Stechly, Mudit Verma, Siddhant Bhambri, Lucas Saldyt, and Anil Murthy. LLMs can't plan, but can help planning in LLM-modulo frameworks. In arXiv preprint, 2024.</a><br><br>
+
+					<a id="ref_5"></a>[5] <a href="https://arxiv.org/abs/2401.00125v1">S P Sharan, Francesco Pittaluga, Vijay Kumar B G, and Manmohan Chandraker. LLM-assist: Enhancing closed-loop planning with language-based reasoning, 2023.</a><br><br>
+
+					<a id="ref_6"></a>[6] <a href="https://arxiv.org/abs/2002.06432">Tom Silver and Rohan Chitnis. PDDLGym: Gym environments from PDDL problems, 2020.</a><br><br>
+
+					<a id="ref_7"></a>[7] <a href="https://openreview.net/pdf?id=1QMMUB4zfl">Tom Silver, Varun Hariprasad, Reece S Shuttleworth, Nishanth Kumar, Tomás Lozano-Pérez, and Leslie Pack Kaelbling. PDDL planning with pretrained large language models. In NeurIPS 2022 Foundation Models for Decision Making Workshop, 2022.</a><br><br>
+
+					<a id="ref_8"></a>[8] <a href="https://arxiv.org/abs/2302.06706">Karthik Valmeekam, Sarath Sreedharan, Matthew Marquez, Alberto Olmo, and Subbarao Kambhampati. On the planning abilities of large language models (a critical investigation with a proposed benchmark), 2023.</a><br><br>
+					<a id="ref_9"></a>[9] <a href="https://arxiv.org/abs/2302.01560">Zihao Wang, Shaofei Cai, Guanzhou Chen, Anji Liu, Xiaojian Ma, and Yitao Liang. Describe, explain, plan and select: Interactive planning with large language models enables open-world multi-task agents, 2024.</a><br><br>
+
+				</div>
+		    </div>
+		    <div class="margin-right-block">
+            <!-- margin notes for reference block here -->
+		    </div>
+		</div>
+
+		<div class="content-margin-container" id="appendix">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+            <h1>Appendix: Predicate Descriptions</h1>
+				<p style="text-indent: 15px;">The predicate descriptions referenced in the prompt templates are listed <a href="json_page.html">here</a>.</p>
+
+				<h4>Grounded Literal Descriptions</h4>
+				<p>The section under "predicates" is the mapping of each predicate name to its corresponding natural language description. Brackets indicate placeholders for the object names that serve as arguments for the ground literal of the predicate.</p>
+
+			<h4>Action Predicate Descriptions</h4>
+            <p>The section under "lifted_skill_descriptions" is the mapping of each action predicate name to its corresponding description.</p>
+			<h4>Lifted Action Literal Variable Descriptions</h4>
+            <p>We provide hand-written descriptions of each variable in the lifted action literal in Baking-Large. The section under "skill_variable_descriptions" is a map from the action name to a list of descriptions for each of the variables.</p>
+			<h4>Goal Descriptions</h4>
+			<p>We provide hand-written natural language descriptions for goals. The section under "train_goals" is the mapping of each training problem to its corresponding goal description.</p>
+		</div>
+		</div>
+
+
+	</body>
+
+</html>
+
